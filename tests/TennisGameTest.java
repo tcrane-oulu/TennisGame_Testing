@@ -20,7 +20,7 @@ public class TennisGameTest {
 // "player2 has advantage"
 // "player1 wins"
 // "player2 wins"
-	@Ignore
+	@Test
 	public void testTennisGame_Start() {
 		//Arrange
 		TennisGame game = new TennisGame();
@@ -31,7 +31,7 @@ public class TennisGameTest {
 	}
 	
 	@Test
-	public void testTennisGame_EahcPlayerWin4Points_Score_Deuce() throws TennisGameException {
+	public void testTennisGame_EachPlayerWin4Points_Score_Deuce() throws TennisGameException {
 		//Arrange
 		TennisGame game = new TennisGame();
 		
@@ -44,6 +44,52 @@ public class TennisGameTest {
 		game.player2Scored();
 		
 		game.player1Scored();
+		game.player2Scored();
+		//Act
+		String score = game.getScore() ;
+		// Assert
+		assertEquals("Tie score incorrect", "deuce", score);		
+	}
+
+	@Test
+	public void testTennisGame_Love40_Score_Correct() throws TennisGameException {
+		// Arrange
+		TennisGame game = new TennisGame();
+
+		// Act
+		game.player2Scored();
+		game.player2Scored();
+		game.player2Scored();
+
+		String score = game.getScore();
+		assertEquals("Love - 40 score incorrect.", "love - 40", score);
+	}
+
+	@Test
+	public void testTennisGame_15To30_Score_Correct() throws TennisGameException {
+		// Arrange
+		TennisGame game = new TennisGame();
+
+		// Act
+		game.player1Scored();
+		game.player2Scored();
+		game.player2Scored();
+
+		String score = game.getScore();
+		assertEquals("15 to 30 score incorrect.", "15 - 30", score);
+	}
+	
+	@Test
+	public void testTennisGame_EachPlayerWin3Points_Score_Deuce() throws TennisGameException {
+		//Arrange
+		TennisGame game = new TennisGame();
+		
+		game.player1Scored();
+		game.player1Scored();
+		game.player1Scored();
+		
+		game.player2Scored();
+		game.player2Scored();
 		game.player2Scored();
 		//Act
 		String score = game.getScore() ;
@@ -63,5 +109,101 @@ public class TennisGameTest {
 		//Act
 		// This statement should cause an exception
 		game.player1Scored();			
-	}		
+	}
+
+	@Test
+	public void testTennisGame_Player1Wins4Points_Correct_Score() throws TennisGameException {
+		// Arrage
+		TennisGame game = new TennisGame();
+		// Act
+		game.player1Scored();
+		game.player1Scored();
+		game.player1Scored();
+		game.player1Scored();
+
+		// Assert
+		String score = game.getScore();
+		assertEquals("Game end score incorrect", "player1 wins", score);
+	}
+
+	@Test
+	public void testTennisGame_Each3PointsThenPlayer1Advantage_Correct_Score() throws TennisGameException {
+		// Arrange
+		TennisGame game = new TennisGame();
+		
+		// Act
+		game.player1Scored();
+		game.player2Scored();
+
+		game.player1Scored();
+		game.player2Scored();
+
+		game.player1Scored();
+		game.player2Scored();
+		
+		game.player1Scored();
+
+		// Assert
+		String score = game.getScore();
+		assertEquals("Advantage score incorrect", "player1 has advantage", score);
+	}
+
+	@Test
+	public void testTennisGame_Player2Advantage_Correct_Score() throws TennisGameException {
+		// Arrange
+		TennisGame game = new TennisGame();
+
+		// Act
+		game.player1Scored();
+		game.player2Scored();
+
+		game.player1Scored();
+		game.player2Scored();
+		
+		game.player1Scored();
+		game.player2Scored();
+
+		game.player2Scored();
+
+		// Assert
+		String score = game.getScore();
+		assertEquals("Advantage score incorrect", "player2 has advantage", score);
+	}
+
+	@Test
+	public void testTennisGame_Both3PointsThenPlayer1Win_Correct_Score() throws TennisGameException {
+		// Arrange
+		TennisGame game = new TennisGame();
+
+		game.player1Scored();
+		game.player2Scored();
+
+		game.player1Scored();
+		game.player2Scored();
+
+		game.player1Scored();
+		game.player2Scored();
+
+		game.player1Scored();
+		game.player1Scored();
+
+		String score = game.getScore();
+		assertEquals("Game end score incorrect", "player1 wins", score);
+	}
+
+	@Test
+	public void testTennisGame_LotsOfAlternatingScores_Correct_Score() throws TennisGameException {
+		// Arrange
+		TennisGame game = new TennisGame();
+
+		// Act
+		for (int i = 0; i < 100; i++) {
+			game.player1Scored();
+			game.player2Scored();
+		}
+
+		// Assert
+		String score = game.getScore();
+		assertEquals("Tie score incorrect", "deuce", score);
+	}
 }
